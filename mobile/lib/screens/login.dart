@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/text.dart';
 import 'package:mobile/helpers/fire_auth.dart';
-import 'package:mobile/screens/HomeScreen.dart';
-import 'package:mobile/widgets/custom_snackbar.dart';
 import 'package:mobile/wrapper.dart';
 // import 'package:login_app/components/components.dart';
 // import 'package:login_app/constants.dart';
