@@ -1,11 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/routes.dart';
+import 'package:mobile/firebase_options.dart';
+import 'package:mobile/screens/Signup.dart';
+import 'package:mobile/screens/login.dart';
+import 'package:mobile/wrapper.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,12 +27,15 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: routes,
-      home: MyHomePage(),
+      // onGenerateRoute: (settings) => routes[settings.name],
+      home: Wrapper(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +48,8 @@ class MyHomePage extends StatelessWidget {
             children: <Widget>[
               TextButton(
                 onPressed: () {
-                  // Add login functionality
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const LoginScreen()));
                 },
                 style: ButtonStyle(
                     backgroundColor:
@@ -54,7 +69,8 @@ class MyHomePage extends StatelessWidget {
               const SizedBox(height: 20.0),
               TextButton(
                 onPressed: () {
-                  // Add login functionality
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const SignupScreen()));
                 },
                 style: ButtonStyle(
                     backgroundColor:
