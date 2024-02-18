@@ -3,12 +3,13 @@ const middleware = require("../firebase/authenticateUser");
 const admin = require("firebase-admin");
 const OpenAI = require("openai");
 const router = express.Router();
+require("dotenv").config();
 
 const db = admin.firestore();
 
 async function generateSuggestionsForVet(petId) {
   const openai = new OpenAI({
-    apiKey: "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",
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   const recordsSnapshot = await db
@@ -51,7 +52,7 @@ async function generateSuggestionsForVet(petId) {
 
 async function generateSuggestionsForClient(petId) {
   const openai = new OpenAI({
-    apiKey: "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",
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   const recordsSnapshot = await db
