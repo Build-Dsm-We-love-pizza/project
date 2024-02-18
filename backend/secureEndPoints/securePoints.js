@@ -1,10 +1,97 @@
 const express = require("express");
 const middleware = require("../firebase/authenticateUser");
 const admin = require("firebase-admin");
-
+const OpenAI = require("openai");
 const router = express.Router();
+require("dotenv").config();
 
 const db = admin.firestore();
+
+async function generateSuggestionsForVet(petId) {
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  const recordsSnapshot = await db
+    .collection("pets")
+    .doc(petId)
+    .collection("records")
+    .get();
+
+  const records = recordsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  console.log(records);
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `I have following data for dog health. It contains values like ${JSON.stringify(
+          records
+        )}, generate suggenstions 
+        based on this data to tell the owner of pet about his health status. activityScore is the excitement level of dog from 1 to 5,
+        food is the brand of the food used, medication may contain what kind of medication is provided to the dog, symptoms are the symptoms 
+        which dog might have. All the data is timebased. Please give response within 50 words. Include medical details as much as possible`,
+      },
+    ],
+    temperature: 1,
+    max_tokens: 256,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
+
+  const suggestion = response.choices?.[0]?.message?.content;
+  await db.collection("pets").doc(petId).update({
+    "doctor-suggestion": suggestion,
+  });
+}
+
+async function generateSuggestionsForClient(petId) {
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  const recordsSnapshot = await db
+    .collection("pets")
+    .doc(petId)
+    .collection("records")
+    .get();
+
+  const records = recordsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  console.log(records);
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `I have following data for dog health. It contains values like ${JSON.stringify(
+          records
+        )}, generate suggenstions 
+        based on this data to tell the owner of pet about his health status. activityScore is the excitement level of dog from 1 to 5,
+        food is the brand of the food used, medication may contain what kind of medication is provided to the dog, symptoms are the symptoms 
+        which dog might have. All the data is timebased. Please give response within 50 words`,
+      },
+    ],
+    temperature: 1,
+    max_tokens: 256,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
+
+  const suggestion = response.choices?.[0]?.message?.content;
+  await db.collection("pets").doc(petId).update({
+    suggestion: suggestion,
+  });
+}
 
 // middleware that is specific to this router
 router.use(middleware.decodeToken);
@@ -39,7 +126,6 @@ router.post("/create-record", async function (req, res) {
   try {
     const petId = req?.body?.["pet_id"];
     if (!petId) throw Error("Pet does not exists");
-
     await db
       .collection("pets")
       .doc(petId)
@@ -48,6 +134,7 @@ router.post("/create-record", async function (req, res) {
         ...req.body,
         dateTime: admin.firestore.Timestamp.now(),
       });
+    await generateSuggestionsForClient(petId);
     res.send({ message: "success" });
   } catch (err) {
     res.status(400).send({ error: err?.message || "Error" });
@@ -56,6 +143,7 @@ router.post("/create-record", async function (req, res) {
 
 router.post("/create-appointment", async function (req, res) {
   try {
+    console.log("heere");
     const userData = await middleware.getUserData(req);
     const uid = userData?.uid;
     const petId = req?.body?.["pet_id"];
@@ -64,7 +152,8 @@ router.post("/create-appointment", async function (req, res) {
     const dateObj = new Date(dateTime);
     const firestoreTimestamp = admin.firestore.Timestamp.fromDate(dateObj);
 
-    if (!petId || !uid || !vetId || !on) throw Error("Provide complete data");
+    if (!petId || !uid || !vetId || !dateTime)
+      throw Error("Provide complete data");
 
     await db.collection("appointments").add({
       from: uid,
@@ -72,6 +161,7 @@ router.post("/create-appointment", async function (req, res) {
       petId,
       on: firestoreTimestamp,
     });
+    await generateSuggestionsForVet(petId);
     res.send({ message: "success" });
   } catch (err) {
     res.status(400).send({ error: err?.message || "Error" });

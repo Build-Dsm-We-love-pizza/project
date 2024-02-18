@@ -33,7 +33,7 @@ export function AccordionDemo() {
   return (
     <>
       <div> Dog Name - {petData?.name} </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <div>
         <Card>
           <CardHeader>AI Suggestions </CardHeader>
           <CardContent>{petData?.["doctor-suggestion"] ?? "None"}</CardContent>
