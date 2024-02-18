@@ -5,10 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/custom_snackbar.dart';
 
 class FireAuth {
+  static Future<String> getIdToken() async {
+    String? tok = await FirebaseAuth.instance.currentUser!.getIdToken();
+
+    return tok!;
+  }
+
   static signout() {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     auth.signOut();
+  }
+
+  static String getUid() {
+    return FirebaseAuth.instance.currentUser!.uid;
   }
 
   static Future<User?> loginWithEmailPass(
