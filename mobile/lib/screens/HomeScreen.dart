@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/helpers/fire_auth.dart';
 import 'package:mobile/models/pet.dart';
+import 'package:mobile/screens/CreatePet.dart';
 import 'package:mobile/screens/ProfileScreen.dart';
 import 'package:mobile/screens/pets.dart';
 import 'package:mobile/screens/stats.dart';
@@ -32,7 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         floatingActionButton: _selectedIndex == 0
             ? FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => CreatePetScreen()));
+                },
                 child: Icon(Icons.add),
               )
             : null,
