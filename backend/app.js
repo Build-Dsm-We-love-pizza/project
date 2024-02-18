@@ -12,6 +12,10 @@ const db = admin.firestore();
 
 const PORT = 3001;
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(cors());
 
 app.get("/", function (req, res) {
@@ -24,6 +28,7 @@ app.get("/ping", async function (req, res) {
 app.post("/create-user", async function (req, res) {
   const email = req?.body?.["email"];
   const pass = req?.body?.["password"];
+  const isVet = req?.body?.["isVet"] || false;
   try {
     if (!email && !pass) throw Error("Give email and Password");
     const data = await getAuth().createUser({
@@ -35,6 +40,7 @@ app.post("/create-user", async function (req, res) {
     const userRef = db.collection("users").doc(uid);
     await userRef.set({
       pets: [],
+      isVet,
     });
 
     res.status(200).send("User record created successfully");
