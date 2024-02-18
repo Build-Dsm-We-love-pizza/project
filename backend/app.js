@@ -1,27 +1,53 @@
 var express = require("express");
 const cors = require("cors");
 const middleware = require("./firebase/authenticateUser");
+const authenticateUser = require("./firebase/authenticateUser");
+const { getAuth } = require("firebase-admin/auth");
+const admin = require("firebase-admin");
+const secureRoutes = require("./secureEndPoints/securePoints");
 
 var app = express();
 
+const db = admin.firestore();
+
 const PORT = 3001;
 
-app.use(cors(), middleware.decodeToken);
+app.use(cors());
 
 app.get("/", function (req, res) {
   res.send("Hello World!");
 });
-app.get("/ping", function (req, res) {
+app.get("/ping", async function (req, res) {
   res.send("pong");
 });
 
-app.post("/user", async function (req, res) {
-  console.log(req.body);
+app.post("/create-user", async function (req, res) {
+  const email = req?.body?.["email"];
+  const pass = req?.body?.["password"];
+  try {
+    if (!email && !pass) throw Error("Give email and Password");
+    const data = await getAuth().createUser({
+      email: email,
+      password: pass,
+    });
+    const uid = data.uid;
+
+    const userRef = db.collection("users").doc(uid);
+    await userRef.set({
+      pets: [],
+    });
+
+    res.status(200).send("User record created successfully");
+  } catch (err) {
+    res.send({ error: err?.message || "Error" });
+  }
 });
 
 app.get("/add-new-pet", function (req, res) {});
 
 app.get("/set-pet-data", function (req, res) {});
+
+app.use("/secure", secureRoutes);
 
 app.listen(PORT, function () {
   console.log(`Example app listening on port ${PORT}!`);
