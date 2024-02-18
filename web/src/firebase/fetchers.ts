@@ -1,4 +1,11 @@
-import { collection, getDocs, query, where, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "./config";
 import { Appointment } from "@/components/Table/TableComponentForAppointemnts";
 
@@ -29,13 +36,10 @@ export const fetchAllHistoryData = async (petId: string) => {
   try {
     const petsRef = doc(db, "pets", petId);
     const recordRef = collection(petsRef, "records");
-    //const querySnapshot = await getDocs(db,);
+    const querySnapshot = await getDoc(petsRef);
     const recordsSnap = await getDocs(recordRef);
-    let allData: any = {};
+    let allData: any = querySnapshot.data();
     const allRecords: any[] = [];
-    // querySnapshot.forEach((doc) => {
-    //   allData = doc.data();
-    // });
 
     recordsSnap.forEach((doc) => {
       allRecords.push({ ...doc.data() });
