@@ -87,7 +87,7 @@ class _LogEntryState extends State<LogEntry> {
                       'pet_id': widget.pet.pet_id,
                       'symptoms': _symptoms,
                       'medications': _medications,
-                      'food': _selectedFood.toString().split('.').last,
+                      'food': _selectedFood.toString(),
                       'activityScore': '$_activityScore',
                     },
                   );
@@ -98,6 +98,7 @@ class _LogEntryState extends State<LogEntry> {
                     print('POST request successful');
                   } else {
                     // Handle error
+                    print(response.body);
                     print(
                         'POST request failed with status: ${response.statusCode}');
                   }

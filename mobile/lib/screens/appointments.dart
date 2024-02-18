@@ -34,10 +34,10 @@ class AppointmentsScreen extends StatelessWidget {
                               return Card(
                                 child: ListTile(
                                   onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => VideoChatScreen(),
-                                    ));
+                                    // Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (context) => VideoChatScreen(),
+                                    // ));
                                   },
                                   title: Text(
                                       'Date: ${DateFormat('dd/MM/yyyy').format(appointment.onTime)}'),
