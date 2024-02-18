@@ -8,7 +8,7 @@ import 'package:mobile/models/pet.dart';
 import 'package:mobile/screens/CreatePet.dart';
 import 'package:mobile/screens/ProfileScreen.dart';
 import 'package:mobile/screens/pets.dart';
-import 'package:mobile/screens/stats.dart';
+import 'package:mobile/screens/appointments.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,7 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  static const screens = [MyPets(), StatsScreen(), ProfileScreen()];
+  static const screens = [
+    MyPets(),
+    AppointmentsScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Pets',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.auto_graph),
-              label: 'Statistics',
+              icon: Icon(Icons.calendar_month),
+              label: 'Appointments',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
