@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/helpers/fire_auth.dart';
 import 'package:mobile/models/pet.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/screens/RecordsScreen.dart';
 
 class LogEntry extends StatefulWidget {
   final Pet pet;
@@ -24,6 +25,17 @@ class _LogEntryState extends State<LogEntry> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Log Entry'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => RecordScreen(
+                          pet: widget.pet,
+                        )));
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -87,7 +99,7 @@ class _LogEntryState extends State<LogEntry> {
                       'pet_id': widget.pet.pet_id,
                       'symptoms': _symptoms,
                       'medications': _medications,
-                      'food': _selectedFood.toString(),
+                      'food': _selectedFood.toString().split(".")[1],
                       'activityScore': '$_activityScore',
                     },
                   );
@@ -102,6 +114,12 @@ class _LogEntryState extends State<LogEntry> {
                     print(
                         'POST request failed with status: ${response.statusCode}');
                   }
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => RecordScreen(
+                                pet: widget.pet,
+                              )));
                 },
                 child: Text('Submit'),
               ),

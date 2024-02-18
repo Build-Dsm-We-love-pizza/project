@@ -9,6 +9,7 @@ class Pet {
   // List<Record> recordsList;
   String user_id;
   String pet_id;
+  String? suggestion;
 
   Pet(
       {required this.name,
@@ -16,14 +17,14 @@ class Pet {
       // required this.recordsList,
       required this.user_id,
       required this.pet_id,
-      required this.breed});
+      required this.breed,
+      this.suggestion});
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'type': type.toString(),
       'user_id': user_id,
-      // 'recordsList': recordsList.map((records) => records.toMap()).toList(),
     };
   }
 
@@ -33,7 +34,8 @@ class Pet {
         type: Type.Dog,
         user_id: doc['user_id'],
         pet_id: doc['pet_id'],
-        breed: doc['breed']);
+        breed: doc['breed'],
+        suggestion: doc['suggestion']);
   }
 }
 

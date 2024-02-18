@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const Spacer(),
             Text('Hello!', style: loginHeading),
             SizedBox(height: 22),
-            Text('Please Sign in to continue',
+            Text('Please Log In to continue',
                 style: login2.copyWith(fontSize: 16)),
             SizedBox(height: 54),
             //LOGIN FORM
@@ -117,25 +117,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           MaterialPageRoute(builder: (context) => Wrapper()),
                         );
                       }
-                      // if (_shouldAccept()) {
-                      //   await AuthService().emailSignIn(
-                      //     email: _emailController.value.text,
-                      //     password: _passwordController.text,
-                      //     context: context,
-                      //   );
-                      //   await AuthService().auth.updateUser(
-                      //         UserAttributes(data: {
-                      //           'isOrganizer': true,
-                      //         }),
-                      //       );
-                      // } else {
-                      //   context
-                      //       .showErrorSnackBar('Please fill the above fields');
-                      // }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Color(0xff1F2544),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -146,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 12.0),
                       child: Text(
-                        'Sign in',
+                        'Log In',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
