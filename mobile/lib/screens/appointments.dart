@@ -11,11 +11,14 @@ class AppointmentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('My Appointments',
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600)),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text("My Appointments"),
               FutureBuilder(
                 future: FireDB.getAppointments(),
                 builder: (context, AsyncSnapshot<List<Appointment>> snapshot) {
@@ -31,18 +34,22 @@ class AppointmentsScreen extends StatelessWidget {
                             itemCount: appointments.length,
                             itemBuilder: (context, index) {
                               final appointment = appointments[index];
-                              return Card(
-                                child: ListTile(
-                                  onTap: () {
-                                    // Navigator.of(context)
-                                    //     .push(MaterialPageRoute(
-                                    //   builder: (context) => VideoChatScreen(),
-                                    // ));
-                                  },
-                                  title: Text(
-                                      'Date: ${DateFormat('dd/MM/yyyy').format(appointment.onTime)}'),
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  color: Color(0xffFFD0EC),
+                                  child: ListTile(
+                                    onTap: () {
+                                      // Navigator.of(context)
+                                      //     .push(MaterialPageRoute(
+                                      //   builder: (context) => VideoChatScreen(),
+                                      // ));
+                                    },
+                                    title: Text(
+                                        'Date: ${DateFormat('dd/MM/yyyy').format(appointment.onTime)}'),
 
-                                  // Add more details as needed
+                                    // Add more details as needed
+                                  ),
                                 ),
                               );
                             },

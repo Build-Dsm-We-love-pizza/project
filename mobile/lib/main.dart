@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/constants/routes.dart';
 import 'package:mobile/firebase_options.dart';
 import 'package:mobile/screens/Signup.dart';
@@ -46,6 +47,16 @@ class MyHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Text(
+                "VetCheck",
+                style: TextStyle(
+                  fontSize: 32.0, // Change the value to adjust the font size
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SvgPicture.asset('assets/images/welcome.svg',
+                  semanticsLabel: 'Welcome Logo'),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -53,7 +64,7 @@ class MyHomePage extends StatelessWidget {
                 },
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
+                        MaterialStateProperty.all<Color>(Color(0xff1F2544)),
                     shape: MaterialStateProperty.all(
                       const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -67,26 +78,6 @@ class MyHomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20.0),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignupScreen()));
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                    ),
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        const EdgeInsets.symmetric(horizontal: 16))),
-                child: const Text(
-                  'Sign Up',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
             ],
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:mobile/helpers/fire_auth.dart';
 import 'package:mobile/models/pet.dart';
 import 'package:mobile/screens/CreatePet.dart';
 import 'package:mobile/screens/ProfileScreen.dart';
+import 'package:mobile/screens/appoinmentCreation.dart';
 import 'package:mobile/screens/pets.dart';
 import 'package:mobile/screens/appointments.dart';
 
@@ -35,21 +36,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: _selectedIndex == 0
-            ? FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => CreatePetScreen()));
-                },
-                child: Icon(Icons.add),
-              )
+        floatingActionButton: _selectedIndex <= 1
+            ? _selectedIndex == 0
+                ? FloatingActionButton(
+                    backgroundColor: const Color(0xffFFD0EC),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const CreatePetScreen()));
+                    },
+                    child: const Icon(Icons.add),
+                  )
+                : FloatingActionButton(
+                    backgroundColor: const Color(0xffFFD0EC),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => AppointmentCreationScreen()));
+                    },
+                    child: const Icon(Icons.add),
+                  )
             : null,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.pets),
+              icon: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.pets),
+              ),
               label: 'Pets',
             ),
             BottomNavigationBarItem(
