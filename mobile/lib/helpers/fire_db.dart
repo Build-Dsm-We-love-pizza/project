@@ -3,9 +3,36 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile/helpers/fire_auth.dart';
+import 'package:mobile/models/appoinment.dart';
 import 'package:mobile/models/pet.dart';
 
 class FireDB {
+  static Future<List<Appointment>> getAppointments() async {
+    List<Appointment> res = [];
+
+    try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+
+      await db
+          .collection('appointments')
+          .where('user_id', isEqualTo: FireAuth.getUid())
+          .get()
+          .then((querySnapshot) => {
+                for (var docSnapshot in querySnapshot.docs)
+                  {
+                    res.add(
+                      Appointment.fromJson(docSnapshot.data()),
+                    ),
+                  }
+              });
+    } catch (e) {
+      print('Error fetching pets: $e');
+      // You might want to throw the error here or handle it in another way.
+    }
+
+    return res;
+  }
+
   static Future<List<Record>> getRecords(String petId) async {
     List<Record> recs = [];
 
