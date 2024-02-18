@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/helpers/fire_auth.dart';
 import 'package:mobile/helpers/fire_db.dart';
 import 'package:mobile/models/pet.dart';
+import 'package:mobile/screens/ProfileScreen.dart';
 import 'package:mobile/screens/RecordsScreen.dart';
 
 class MyPets extends StatelessWidget {
@@ -33,10 +34,13 @@ class MyPets extends StatelessWidget {
                   child: ListTile(
                     title: Text(pets[index].name),
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => RecordScreen(
-                                pet: pets[index],
-                              )));
+                      print('tapped ');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => RecordScreen(
+                                    pet: pets[index],
+                                  )));
                     },
                   ),
                 );
