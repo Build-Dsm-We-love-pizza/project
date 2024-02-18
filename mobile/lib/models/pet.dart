@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Pet {
   String name;
   Type type;
+  String breed;
   // List<Record> recordsList;
   String user_id;
   String pet_id;
@@ -14,7 +15,8 @@ class Pet {
       required this.type,
       // required this.recordsList,
       required this.user_id,
-      required this.pet_id});
+      required this.pet_id,
+      required this.breed});
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,7 +32,8 @@ class Pet {
         name: doc['name'],
         type: Type.Dog,
         user_id: doc['user_id'],
-        pet_id: doc['pet_id']);
+        pet_id: doc['pet_id'],
+        breed: doc['breed']);
   }
 }
 
